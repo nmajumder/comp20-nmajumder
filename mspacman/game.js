@@ -4,6 +4,6 @@ function init() {
 	img = new Image(); 
 	img.src = 'pacman10-hp-sprite.png';
 	img.onload = function() {
-		ctx.drawImage(img, 0, 0);
+		ctx.drawImage(img, 322, 2, 464, 135, 0, 0, 464, 135);
 	}
 }
