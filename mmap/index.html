@@ -71,7 +71,7 @@
 			myinfo = "login=" + username + "&lat=" + latitude + "&lng=" + longitude;
 			request.open("POST", address, true);
 			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			request.send(myinfo);
+			//request.send(myinfo);
 
 			request.onreadystatechange = function() {
 				if (request.readyState == 4) {
