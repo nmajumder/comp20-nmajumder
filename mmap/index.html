@@ -83,6 +83,7 @@
 		function parsingData(myArray) {
 			console.log("In parsingData");
 			for (i = 0; i < myArray.length; i++) {
+				console.log("yo");
 				console.log("Person's latitude: " + myArray[i].lat + " ");
 				console.log("Person's longitude: " + myArray[i].lat + "<br>");
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
