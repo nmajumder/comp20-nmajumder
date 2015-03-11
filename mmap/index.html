@@ -12,7 +12,6 @@
 	<script>
 		var latitude = 0;
 		var longitude = 0;
-		var request = new XMLHttpRequest();
 		var me = new google.maps.LatLng(latitude, longitude);
 		myOptions = {
 			zoom: 13,
@@ -50,24 +49,54 @@
 			marker = new google.maps.Marker({
 				position: me,
 				//icon: "",
-				title: "Sup Bitches"
+				title: "My Location"
 			});
 			marker.setMap(map);
 
-			// open info window on 'click'
+			getHTTP();
+
+			// put this into a function below
 			google.maps.event.addListener(marker, 'click', function() {
 				infowindow.setContent(marker.title);
 				infowindow.open(map,marker);
 			});
+		}
 
-			// call google places API
-			request = {
-				location: me,
-				radius: '500',
-				types: ['people?']
-			};
-			service = new google.maps.places.PlacesService(map);
-			service.search(request, callback);
+		function getHTTP() {
+			address = "https://secret-about-box.herokuapp.com/sendLocation";
+			request = new XMLHttpRequest();
+			username = "TravisDuke";
+			myinfo = "login=" + username + "&lat=" + latitude + "&lng=" + longitude;
+			request.open("POST", address, true);
+
+			request.onreadystatechange = function() {
+				if (request.readyState == 4) {
+					parsed = JSON.parse(request.responseText);
+					parsingData(parsed);
+				}
+			}
+			request.send();
+		}
+
+		function parsingData(myArray) {
+			for (i = 0; i < myArray.length; i++) {
+				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
+				var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
+				var mark = new google.maps.Marker({
+					position: location,
+					title: "<h1>" + "Username: " + myArray[i].login + "</h1>",
+					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng + "Distance: " + distance + "</p>"
+				});
+				currentInfoWindow = new infowindow();
+			}
+			// iterate through indices of 'myArray'
+			// myArray[i].login, myArray[i].lat (.lng)
+			// for each person create a new google.maps.LatLng() and new marker
+			// for each person create a new 
+		}
+/*
+		function setContent(marker, content) {
+
 		}
 
 		function callback(results, status) {
@@ -92,6 +121,7 @@
 				infowindow.open(map, this);
 			});
 		}
+*/
 	</script>
 	
 </head>
