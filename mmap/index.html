@@ -96,6 +96,7 @@
 					title: "<h1>" + "Username: " + myArray[i].login + "</h1>",
 					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng //+ "Distance: " + distance + "</p>"
 				});
+				mark.setMap(map);
 				var currentInfoWindow = new google.maps.InfoWindow();
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(mark.title + "<br>" + mark.content);
