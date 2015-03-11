@@ -50,7 +50,7 @@
 			marker = new google.maps.Marker({
 				position: me,
 				icon: "pbicon.png",
-				title: "<h1>TravisDuke</h1>",
+				title: "<h1>TravisDuke (ME)</h1>",
 				content: "<p>" + "Latitude: " + myLat + "<br>" + "Longitude: " + myLng + "</p>"
 			});
 			marker.setMap(map);
@@ -67,7 +67,7 @@
 			console.log("In getHTTP");
 			address = "https://secret-about-box.herokuapp.com/sendLocation";
 			request = new XMLHttpRequest();
-			username = "TravisDuke (ME)";
+			username = "TravisDuke";
 			myinfo = "login=" + username + "&lat=" + latitude + "&lng=" + longitude;
 			request.open("POST", address, true);
 			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
