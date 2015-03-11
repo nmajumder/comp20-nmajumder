@@ -93,7 +93,7 @@
 				//var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
 					position: location,
-					title: "<h1>" + "Username: " + myArray[i].login + "</h1>",
+					title: "<h1>" + myArray[i].login + "</h1>",
 					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng //+ "Distance: " + distance + "</p>"
 				});
 				mark.setMap(map);
