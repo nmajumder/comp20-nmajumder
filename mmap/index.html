@@ -32,8 +32,8 @@
 				navigator.geolocation.getCurrentPosition(function(position) {
 					latitude = position.coords.latitude;
 					longitude = position.coords.longitude;
-					console.log(latitude);
-					console.log(longitude);
+					// console.log(latitude);
+					// console.log(longitude);
 					renderMap();
 				});
 			} else {
@@ -42,7 +42,7 @@
 		}
 
 		function renderMap() {
-			console.log("In renderMap");
+			// console.log("In renderMap");
 			me = new google.maps.LatLng(latitude, longitude);
 			map.panTo(me);
 
@@ -79,34 +79,49 @@
 					parsingData(parsed);
 				}
 			}
-			request.send();
+			// request.open("POST", address, true);
+			// request.send();
 		}
 
 		function parsingData(myArray) {
-			console.log("In parsingData");
-			console.log(myArray.length);
+			// console.log("In parsingData");
+			// console.log(myArray.length);
 			for (i = 0; i < myArray.length; i++) {
-				console.log("yo");
-				console.log("Person's latitude: " + myArray[i].lat);
-				console.log("Person's longitude: " + myArray[i].lat);
+				// console.log("yo");
+				// console.log("Person's latitude: " + myArray[i].lat);
+				// console.log("Person's longitude: " + myArray[i].lat);
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
 				//var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
+					map: map,
 					position: location,
 					title: "<h1>" + myArray[i].login + "</h1>",
 					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng //+ "Distance: " + distance + "</p>"
 				});
-				mark.setMap(map);
-				var currentInfoWindow = new google.maps.InfoWindow();
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(mark.title + "<br>" + mark.content);
-					infowindow.open(map,mark);
+
+				var contentString = mark.title + "<br>" + mark.content;
+
+				var infoWindow = new google.maps.InfoWindow({
+					content: contentString
 				});
+				google.maps.event.addListener(mark, 'click', function(content){
+					return function(){
+						infoWindow.setContent(content);
+						infoWindow.open(map, this);
+					}
+				}(contentString));
+				// var currentInfoWindow = new google.maps.InfoWindow({
+				// 	content: markContent
+				// });
+				// var markContent = mark.title + "<br>" + mark.content;
+				// google.maps.event.addListener(mark, 'click', function(markContent) {
+				// 	console.log('click');
+				// 	return function() {
+				// 		currentInfoWindow.setContent(markContent);
+				// 		currentInfoWindow.open(map, this);
+				// 	}
+				// });
 			}
-			// iterate through indices of 'myArray'
-			// myArray[i].login, myArray[i].lat (.lng)
-			// for each person create a new google.maps.LatLng() and new marker
-			// for each person create a new 
 		}
 /*
 		function setContent(marker, content) {
