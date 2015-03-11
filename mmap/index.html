@@ -42,6 +42,7 @@
 		}
 
 		function renderMap() {
+			console.log("In renderMap");
 			me = new google.maps.LatLng(latitude, longitude);
 			map.panTo(me);
 
@@ -63,6 +64,7 @@
 		}
 
 		function getHTTP() {
+			console.log("In getHTTP");
 			address = "https://secret-about-box.herokuapp.com/sendLocation";
 			request = new XMLHttpRequest();
 			username = "TravisDuke";
@@ -79,9 +81,10 @@
 		}
 
 		function parsingData(myArray) {
+			console.log("In parsingData");
 			for (i = 0; i < myArray.length; i++) {
-				console.log(myArray[i].lat);
-				console.log(myArray[i].lat);
+				console.log("Person's latitude: " + myArray[i].lat + " ");
+				console.log("Person's longitude: " + myArray[i].lat + "<br>");
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
 				var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
