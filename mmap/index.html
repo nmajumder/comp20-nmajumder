@@ -34,14 +34,14 @@
 					longitude = position.coords.longitude;
 					// console.log(latitude);
 					// console.log(longitude);
-					renderMap();
+					renderMap(latitude, longitude);
 				});
 			} else {
 				alert("Geolocation not supported on this browser");
 			}
 		}
 
-		function renderMap() {
+		function renderMap(myLat, myLng) {
 			// console.log("In renderMap");
 			me = new google.maps.LatLng(latitude, longitude);
 			map.panTo(me);
@@ -50,15 +50,15 @@
 			marker = new google.maps.Marker({
 				position: me,
 				icon: "polarbear.png",
-				title: "My Location"
+				title: "<h1>TravisDuke</h1>",
+				content: "<p>" + "Latitude: " + myLat + "<br>" + "Longitude: " + myLng + "</p>"
 			});
 			marker.setMap(map);
 
 			getHTTP();
 
-			// put this into a function below
 			google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(marker.title);
+				infowindow.setContent(marker.title + "<br>" + marker.content);
 				infowindow.open(map,marker);
 			});
 		}
