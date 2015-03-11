@@ -87,14 +87,14 @@
 			console.log(myArray.length);
 			for (i = 0; i < myArray.length; i++) {
 				console.log("yo");
-				console.log("Person's latitude: " + myArray[i].lat + " ");
-				console.log("Person's longitude: " + myArray[i].lat + "<br>");
+				console.log("Person's latitude: " + myArray[i].lat);
+				console.log("Person's longitude: " + myArray[i].lat);
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
-				var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
+				//var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
 					position: location,
 					title: "<h1>" + "Username: " + myArray[i].login + "</h1>",
-					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng + "Distance: " + distance + "</p>"
+					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng //+ "Distance: " + distance + "</p>"
 				});
 				currentInfoWindow = new infowindow();
 			}
