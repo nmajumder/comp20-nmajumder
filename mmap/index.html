@@ -30,11 +30,9 @@
 		function getLocation() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(function(position) {
-					latitude = position.coords.latitude;
-					longitude = position.coords.longitude;
-					// console.log(latitude);
-					// console.log(longitude);
-					renderMap(latitude, longitude);
+					myLatitude = position.coords.latitude;
+					myLongitude = position.coords.longitude;
+					renderMap(myLatitude, myLongitude);
 				});
 			} else {
 				alert("Geolocation not supported on this browser");
@@ -42,8 +40,7 @@
 		}
 
 		function renderMap(myLat, myLng) {
-			// console.log("In renderMap");
-			me = new google.maps.LatLng(latitude, longitude);
+			me = new google.maps.LatLng(myLatitude, myLongitude);
 			map.panTo(me);
 
 			// marker for where I am
@@ -64,11 +61,10 @@
 		}
 
 		function getHTTP() {
-			console.log("In getHTTP");
 			address = "https://secret-about-box.herokuapp.com/sendLocation";
 			request = new XMLHttpRequest();
 			username = "TravisDuke";
-			myinfo = "login=" + username + "&lat=" + latitude + "&lng=" + longitude;
+			myinfo = "login=" + username + "&lat=" + myLatitude + "&lng=" + myLongitude;
 			request.open("POST", address, true);
 			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			request.send(myinfo);
@@ -79,24 +75,17 @@
 					parsingData(parsed);
 				}
 			}
-			// request.open("POST", address, true);
-			// request.send();
 		}
 
 		function parsingData(myArray) {
-			// console.log("In parsingData");
-			// console.log(myArray.length);
 			for (i = 0; i < myArray.length; i++) {
-				// console.log("yo");
-				// console.log("Person's latitude: " + myArray[i].lat);
-				// console.log("Person's longitude: " + myArray[i].lat);
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
-				//var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
+				var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
 					map: map,
 					position: location,
 					title: "<h1>" + myArray[i].login + "</h1>",
-					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng //+ "Distance: " + distance + "</p>"
+					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng + "<br>" + "Distance: " + distance + "</p>"
 				});
 
 				var contentString = mark.title + "<br>" + mark.content;
@@ -110,47 +99,32 @@
 						infoWindow.open(map, this);
 					}
 				}(contentString));
-				// var currentInfoWindow = new google.maps.InfoWindow({
-				// 	content: markContent
-				// });
-				// var markContent = mark.title + "<br>" + mark.content;
-				// google.maps.event.addListener(mark, 'click', function(markContent) {
-				// 	console.log('click');
-				// 	return function() {
-				// 		currentInfoWindow.setContent(markContent);
-				// 		currentInfoWindow.open(map, this);
-				// 	}
-				// });
-			}
-		}
-/*
-		function setContent(marker, content) {
-
-		}
-
-		function callback(results, status) {
-			if (status == google.maps.places.PlacesServicesStatus.OK) {
-				places = results;
-				for (var i = 0; i < results.length; i++) {
-					createMarker(results[i]);
-				}
 			}
 		}
 
-		function createMarker(place) {
-			var location = place.geometry.location;
-			var marker = new google.maps.Marker({
-				map: map,
-				position: place.geometry.location
-			});
+		function calculateDistance(lat, lng) {
+			Number.prototype.toRad = function() {
+			   return this * Math.PI / 180;
+			}
 
-			google.maps.event.addListener(marker, 'click', function() {
-				infowindow.close();
-				infowindow.setContent(place.name);
-				infowindow.open(map, this);
-			});
+			var lat2 = lat; 
+			var lon2 = lng; 
+			var lat1 = myLatitude; 
+			var lon1 = myLongitude; 
+
+			var R = 6371;
+			var x1 = lat2-lat1;
+			var dLat = x1.toRad();  
+			var x2 = lon2-lon1;
+			var dLon = x2.toRad();  
+			var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+			                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+			                Math.sin(dLon/2) * Math.sin(dLon/2);  
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c; 
+			return d;
 		}
-*/
+
 	</script>
 	
 </head>
