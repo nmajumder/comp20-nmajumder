@@ -78,7 +78,7 @@
 		}
 
 		function parsingData(myArray) {
-			for (i = 0; i < myArray.length; i++) {
+			for (i = 1; i < myArray.length; i++) {
 				var location = new google.maps.LatLng(myArray[i].lat, myArray[i].lng);
 				var distance = calculateDistance(myArray[i].lat, myArray[i].lng);
 				var mark = new google.maps.Marker({
