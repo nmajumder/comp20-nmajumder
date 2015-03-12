@@ -47,7 +47,7 @@
 			marker = new google.maps.Marker({
 				position: me,
 				icon: "alaska.png",
-				title: "<h1>TravisDuke (ME)</h1>",
+				title: "TravisDuke (ME)",
 				content: "<p>" + "Latitude: " + myLat + "<br>" + "Longitude: " + myLng + "</p>"
 			});
 			marker.setMap(map);
@@ -84,7 +84,7 @@
 				var mark = new google.maps.Marker({
 					map: map,
 					position: location,
-					title: "<h1>" + myArray[i].login + "</h1>",
+					title: myArray[i].login,
 					content: "<p>" + "Latitude: " + myArray[i].lat + "<br>" + "Longitude: " + myArray[i].lng + "<br>" + "Distance: " + distance + "</p>"
 				});
 
