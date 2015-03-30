@@ -7,12 +7,20 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
 		$("document").ready(function() {
+			output = "";
+			for (var i = 0; i < localStorage.length; ++i) {
+			  	output = "<p>" + localStorage.getItem(localStorage.key(i)) + "</p>";
+			  	console.log(localStorage.getItem(localStorage.key(i)) + " -- " + localStorage.key(i));
+				$("#log").prepend(output);			
+			}
+
 			$("#msg").keypress(function(e) {
 				if (e.which == 13) {
 					today = new Date();
 					input = $("#msg").val();
 					fullEntry = "<p>" + today + " - " + input + "<p>";
 					$("#log").prepend(fullEntry);
+					localStorage.setItem('entry', fullEntry);
 				}
 			});
 		});
