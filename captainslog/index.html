@@ -7,11 +7,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
 		$("document").ready(function() {
-			$("#msg").keypress(function() {
-				today = new Date();
-				input = $("#msg").val();
-				fullEntry = "<p>" + today + " - " + input + "<p>";
-				$("#log").prepend(fullEntry);
+			$("#msg").keypress(function(e) {
+				if (e.which == 13) {
+					today = new Date();
+					input = $("#msg").val();
+					fullEntry = "<p>" + today + " - " + input + "<p>";
+					$("#log").prepend(fullEntry);
+				}
 			});
 		});
 	</script>
