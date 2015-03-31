@@ -20,7 +20,7 @@
 					input = $("#msg").val();
 					fullEntry = "<p>" + today + " - " + input + "<p>";
 					$("#log").prepend(fullEntry);
-					localStorage.setItem('entry', fullEntry);
+					localStorage.setItem(today, fullEntry);
 				}
 			});
 		});
