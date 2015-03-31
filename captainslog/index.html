@@ -10,7 +10,6 @@
 			output = "";
 			for (var i = 0; i < localStorage.length; ++i) {
 			  	output = "<p>" + localStorage.getItem(localStorage.key(i)) + "</p>";
-			  	console.log(localStorage.getItem(localStorage.key(i)) + " -- " + localStorage.key(i));
 				$("#log").prepend(output);			
 			}
 
