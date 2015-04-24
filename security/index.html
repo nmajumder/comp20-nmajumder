@@ -8,30 +8,79 @@
 	<link rel="stylesheet" href="style.css"/>
 	<div id="heading">
 		<h1>Security Assessment</h1>
-		<h3>Nathan Majumder - 24 April 2015</h3>
+		<h3>By Nathan Majumder<br>24 April 2015</h3>
 	</div>
 </head>
 
 <body>
 	<div class="section">
 		<h2>Introduction</h2>
+		<p>This security assessment tests the security of assignments 2 and 3 for Comp 20 built by Alice Lee. Assignment 2 allowed a user to "check in" one's location (latitude and longitude) and send this information along with a login to a database and use a get request to receive data about other users in the database. Assignment 3 dealt with constructing the API for the back end server of assignment 2. It includes a post method which takes a login, latitude, and longitude and puts a user's info in a database, it has a get method that lists all users checked into the database, and it has a get method that allows a user to query a certain login in the database. In this document I aim to uncover ways in which someone might exploit the lack of security of these projects, so that the owner might then protect against them.</p>
 	</div>
 	<div class="section">
 		<h2>Methodology</h2>
+		<p>I first conduct black box testing of the application (i.e. I attempt to attack it without access to the source code). Then I dive into the code and use my analysis of that to help me uncover more insecurities. I use curl on the command line to post to the /sendLocation method in order to test the problems found.</p>
 	</div>
 	<div class="section">
 		<h2>Abstract of Findings</h2>
+		<p>In this assessment, I find that various attacks on the application are successful in displaying incorrect data, modifying existing data, and sending messages to other users of the applications. The main reason for these insecurities is the lack of checks for valid input. Attacks like cross site scripting and other injections as well as invalid inputs could be checked for, yet the inputs are taken as they are given, allowing a user to bypass intended invariants for the server and the map feature.
 	</div>
 	<div class="section">
 		<h2>Issues Found</h2>
 		<ol>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>
+				<h3>Improper Location Data & No Input Validity Check</h3>
+				<p>
+					First off, an obvious insecurity is that using the curl command, I am able to input any data for any post parameters and the server will accept the data as a login name, a latitude, and a longitude, regardless of the strings I send the server. Because of a lack of input checking, the coordinates that the user sends the server need not be valid coordinates on the earth. In fact, they need not be floating point values (or even numbers!) at all. Effectively, the problem is that the user could enter random words as the latitude and longitude and display them as a location, thereby screwing up any client that is trying to use the list of users' locations for something like a map. An example of this is that one can use curl to put any series of characters into the post fields and the server will store and display them as follows:
+
+					<div class="code"><code>curl --data "login=This guy&lat=your house&lng=is watching you" https://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
+
+					<div><img class="screenshot" src="location-not-floats.png" alt="invalid location example"/></div>
+
+					This is a very basic flaw, but one that should be addressed nonetheless, as the client should only be able to send coordinates that are valid. This would require only a check of first, whether the inputs are floats, and second, whether the inputs are valid (within the range from min-max lat and lng) on the earth. This would ensure that a client could count on the users having locations that could be displayed on a map. Otherwise, the client must do the checking for valid locations himself when he receives the data back.
+				</p>
+			</li>
+			<li>
+				<h3>Incorrect Geolocation for Users</h3>
+
+					<br>Following from the last insecurity, a worry regarding the map in assignment 2 is that a user is able to directly input his coordinates via curl (demonstrated in the previous section), thereby bypassing the restriction that coordinates be obtained through the get geolocation method. So even if the coordinates entered are valid latitude and longitude values (if we fixed the previous problem),when a user enters something like the following curl command, the map will display him in a false location, destroying the trustworthiness of the entire application:
+
+					<div class="code"><code>curl --data "login=yooo&lat=0&lng=0" https://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
+
+					<div><img class="screenshot" src="invalid-location.png" alt="invalid location example"/></div>
+
+					If a user is able to avoid sending his actual geolocation, this makes it impossible to trust the locations of any of the users on the map.<br><br>
+
+					One solution to this problem is to check upon a post request whether the given location is valid for the IP address sending the request. Using express's request.ip feature we can find the machine's address that called the method and determine an estimate of the computer's latitude and longitude. Then we can assert that the provided location is believable for most cases, and on attempts to bypass this geolocation feature, we can throw away the request and not store it in the database. This would allow clients to trust our list of users and their locations.
+				</p>
+			</li>
+			<li>
+				<h3>Cross Site Scripting</h3>
+				<p>
+				I found that without much effort I was able to post messages and alerts to the server, and since the server does not check for any special characters (it just sends the input as it is), whatever I post affects all other users of the API. Look at the first image in bullet point 1 of this section to see the output of a user's information as it is intended to be displayed.
+				Next, however, when I used curl again, I was able to post any series of characters I wanted to. So by using html and javascript as the data to be sent in the login, lat, and lng fields, I was able to affect all users of the application.<br>
+				Using the following curl commands, I forced all clients who went to the page URL to see the following displays: <br><br>
+
+				Inserting html:
+
+				<div class="code"><code>curl --data "login=hacker123&lat=&lth1 style="font-size:500%"&gt&ltspan style="color:magenta"&gtLOLOLOLOL&lt/span&gt&lt/h1&gt&<br>lng=&lth1 style="font-family:cursive"&gtYou &ltspan style="font-size:300%"&gtcan't&lt/span&gt stop meeee&lt/h1&gt" https://hid<br>den-retreat-2304.herokuapp.com/sendLocation</code></div>
+
+				Inserting javascript:
+				
+				<div class="code"><code>curl --data "login=MEEEEE&lat=I could be anywhere...&lng=&ltscript&gtalert('WHY IS THIS HAPPENING');&lt/script&gt" htt<br>ps://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
+
+				<div><img class="screenshot" src="after-XSS-attack.png" alt="html XSS visual"/></div>
+				
+				This security problem is easily fixed by escaping: when the server gets input through the post capability, instead of trusting user input and just using it as is, the characters should be scanned for special characters (such as '&lt' and '&gt' among others), and when found, these characters should be replaced by their html entity versions. This way, they will show up as strings rather than affecting a client as html or javascript.
+				</p>
+			</li>
 		</ol>
 	</div>
 	<div class="section">
 		<h2>Conclusion</h2>
+		<p>
+			In conclusion, many of the insecurities found in these projects stemmed from having too much faith in user input, a common theme it seems. 
+		</p>
 	</div>
 
 </body>
