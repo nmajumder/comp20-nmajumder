@@ -33,7 +33,7 @@
 				<p>
 					First off, an obvious insecurity is that using the curl command, I am able to input any data for any post parameters and the server will accept the data as a login name, a latitude, and a longitude, regardless of the strings I send the server. Because of a lack of input checking, the coordinates that the user sends the server need not be valid coordinates on the earth. In fact, they need not be floating point values (or even numbers!) at all. Effectively, the problem is that the user could enter random words as the latitude and longitude and display them as a location, thereby screwing up any client that is trying to use the list of users' locations for something like a map. An example of this is that one can use curl to put any series of characters into the post fields and the server will store and display them as follows:
 
-					<div class="code"><code>curl --data "login=This guy&lat=your house&lng=is watching you" https://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
+					<div class="code"><code>curl --data "login=This guy&lat=your house&lng=is watching you" https://hidden-retreat-2304.herokuapp.com/send<br>Location</code></div>
 
 					<div><img class="screenshot" src="location-not-floats.png" alt="invalid location example"/></div>
 
@@ -44,7 +44,7 @@
 				<h3>Incorrect Geolocation for Users</h3>
 				<p>Affects GET API in terms of data returned if no check is made, but again should be checked for in POST API before data is even inserted into database - moderate to high severity</p>
 
-					Following from the last insecurity, a worry regarding the map in assignment 2 is that a user is able to directly input his coordinates via curl (demonstrated in the previous section), thereby bypassing the restriction that coordinates be obtained through the get geolocation method. So even if the coordinates entered are valid latitude and longitude values (if we fixed the previous problem),when a user enters something like the following curl command, the map will display him in a false location, destroying the trustworthiness of the entire application:
+					Following from the last insecurity, a worry regarding the map in assignment 2 is that a user is able to directly input his coordinates via curl (demonstrated in the previous section), thereby bypassing the restriction that coordinates be obtained through the get geolocation method. So even if the coordinates entered are valid latitude and longitude values (if we fixed the previous problem), when a user enters something like the following curl command, the map will display him in a false location, destroying the trustworthiness of the entire application:
 
 					<div class="code"><code>curl --data "login=yooo&lat=0&lng=0" https://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
 
