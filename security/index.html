@@ -11,7 +11,6 @@
 		<h3>By Nathan Majumder<br>24 April 2015</h3>
 	</div>
 </head>
-
 <body>
 	<div class="section">
 		<h2>Introduction</h2>
@@ -57,21 +56,31 @@
 			<li>
 				<h3>Cross Site Scripting</h3>
 				<p>
-				I found that without much effort I was able to post messages and alerts to the server, and since the server does not check for any special characters (it just sends the input as it is), whatever I post affects all other users of the API. Look at the first image in bullet point 1 of this section to see the output of a user's information as it is intended to be displayed.
-				Next, however, when I used curl again, I was able to post any series of characters I wanted to. So by using html and javascript as the data to be sent in the login, lat, and lng fields, I was able to affect all users of the application.<br>
-				Using the following curl commands, I forced all clients who went to the page URL to see the following displays: <br><br>
+					I found that without much effort I was able to post messages and alerts to the server, and since the server does not check for any special characters (it just sends the input as it is), whatever I post affects all other users of the API. Look at the first image in bullet point 1 of this section to see the output of a user's information as it is intended to be displayed.
+					Next, however, when I used curl again, I was able to post any series of characters I wanted to. So by using html and javascript as the data to be sent in the login, lat, and lng fields, I was able to affect all users of the application.<br>
+					Using the following curl commands, I forced all clients who went to the page URL to see the following displays: <br><br>
 
-				Inserting html:
+					Inserting html:
 
-				<div class="code"><code>curl --data "login=hacker123&lat=&lth1 style="font-size:500%"&gt&ltspan style="color:magenta"&gtLOLOLOLOL&lt/span&gt&lt/h1&gt&<br>lng=&lth1 style="font-family:cursive"&gtYou &ltspan style="font-size:300%"&gtcan't&lt/span&gt stop meeee&lt/h1&gt" https://hid<br>den-retreat-2304.herokuapp.com/sendLocation</code></div>
+					<div class="code"><code>curl --data "login=hacker123&lat=&lth1 style="font-size:500%"&gt&ltspan style="color:magenta"&gtLOLOLOLOL&lt/span&gt&lt/h1&gt&<br>lng=&lth1 style="font-family:cursive"&gtYou &ltspan style="font-size:300%"&gtcan't&lt/span&gt stop meeee&lt/h1&gt" https://hid<br>den-retreat-2304.herokuapp.com/sendLocation</code></div>
 
-				Inserting javascript:
-				
-				<div class="code"><code>curl --data "login=MEEEEE&lat=I could be anywhere...&lng=&ltscript&gtalert('WHY IS THIS HAPPENING');&lt/script&gt" htt<br>ps://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
+					Inserting javascript:
+					
+					<div class="code"><code>curl --data "login=MEEEEE&lat=I could be anywhere...&lng=&ltscript&gtalert('WHY IS THIS HAPPENING');&lt/script&gt" htt<br>ps://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
 
-				<div><img class="screenshot" src="after-XSS-attack.png" alt="html XSS visual"/></div>
-				
-				This security problem is easily fixed by escaping: when the server gets input through the post capability, instead of trusting user input and just using it as is, the characters should be scanned for special characters (such as '&lt' and '&gt' among others), and when found, these characters should be replaced by their html entity versions. This way, they will show up as strings rather than affecting a client as html or javascript.
+					<div><img class="screenshot" src="after-XSS-attack.png" alt="html XSS visual"/></div>
+					
+					This security problem is easily fixed by escaping: when the server gets input through the post capability, instead of trusting user input and just using it as is, the characters should be scanned for special characters (such as '&lt' and '&gt' among others), and when found, these characters should be replaced by their html entity versions. This way, they will show up as strings rather than affecting a client as html or javascript.
+				</p>
+			</li>
+			<li>
+				<h3>Lack of Privacy of Usernames</h3>
+				<p>
+					This is not necessarily a security issue in terms of how the assignments were implemented, but I just thought I'd point out that the usernames given at the beginning of assignment 2 were supposed to preserve anonymity, but they do not. I simply have to go to the url http://tuftsdev.github.io/comp20-alee/mmaps/ (a public website) and I am brought to Alice Lee's map page which contains her "private" username.
+
+					<div><img class="screenshot" src="a-lee-map-username.png" alt="Alice Lee's map displaying username"/></div>
+
+					If someone wants to know where Alice is, they first just go to her website above (to do this they need only know her first initial and last name) and click on her icon to find out her username. Now at any point when Alice checks in by sending her location to the server other users know her exact coordinates... A little creepy don't you think?
 				</p>
 			</li>
 		</ol>
@@ -79,10 +88,10 @@
 	<div class="section">
 		<h2>Conclusion</h2>
 		<p>
-			In conclusion, many of the insecurities found in these projects stemmed from having too much faith in user input, a common theme it seems. 
+			In conclusion, many of the insecurities found in these projects stemmed from having too much faith in user input, a common theme it seems. By checking the above cases and forcing the user to input valid data into the database, we could assure to clients using this application that the data provided is valid and that there will be no attacks (i.e. injection and cross site scripting) that affect him at his end. This would make the application much more desirable and usable.<br><br>
+
+			While we will not achieve full security from attacks, we will be able to get a large increase in security for not much extra cost. An application can always be made more secure, but the tradeoffs of doing so are not always worth it. When analayzing the security of an application, the most important things to think about are the risks and the benefits of different levels of security, as well as the costs of increasing security. For every situation, there is a tipping point where it is just not worth it to keep working at increasing security, and the key is to understand where that point is.
 		</p>
 	</div>
-
 </body>
-
 </html>
