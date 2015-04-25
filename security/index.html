@@ -29,6 +29,7 @@
 		<ol>
 			<li>
 				<h3>Improper Location Data & No Input Validity Check</h3>
+				<p>Affects GET API in terms of data returned if no check is made, but should be checked for in POST API before data is even inserted into database - moderate severity</p>
 				<p>
 					First off, an obvious insecurity is that using the curl command, I am able to input any data for any post parameters and the server will accept the data as a login name, a latitude, and a longitude, regardless of the strings I send the server. Because of a lack of input checking, the coordinates that the user sends the server need not be valid coordinates on the earth. In fact, they need not be floating point values (or even numbers!) at all. Effectively, the problem is that the user could enter random words as the latitude and longitude and display them as a location, thereby screwing up any client that is trying to use the list of users' locations for something like a map. An example of this is that one can use curl to put any series of characters into the post fields and the server will store and display them as follows:
 
@@ -41,8 +42,9 @@
 			</li>
 			<li>
 				<h3>Incorrect Geolocation for Users</h3>
+				<p>Affects GET API in terms of data returned if no check is made, but again should be checked for in POST API before data is even inserted into database - moderate to high severity</p>
 
-					<br>Following from the last insecurity, a worry regarding the map in assignment 2 is that a user is able to directly input his coordinates via curl (demonstrated in the previous section), thereby bypassing the restriction that coordinates be obtained through the get geolocation method. So even if the coordinates entered are valid latitude and longitude values (if we fixed the previous problem),when a user enters something like the following curl command, the map will display him in a false location, destroying the trustworthiness of the entire application:
+					Following from the last insecurity, a worry regarding the map in assignment 2 is that a user is able to directly input his coordinates via curl (demonstrated in the previous section), thereby bypassing the restriction that coordinates be obtained through the get geolocation method. So even if the coordinates entered are valid latitude and longitude values (if we fixed the previous problem),when a user enters something like the following curl command, the map will display him in a false location, destroying the trustworthiness of the entire application:
 
 					<div class="code"><code>curl --data "login=yooo&lat=0&lng=0" https://hidden-retreat-2304.herokuapp.com/sendLocation</code></div>
 
@@ -55,6 +57,7 @@
 			</li>
 			<li>
 				<h3>Cross Site Scripting</h3>
+				<p>Affects GET API - high severity</p>
 				<p>
 					I found that without much effort I was able to post messages and alerts to the server, and since the server does not check for any special characters (it just sends the input as it is), whatever I post affects all other users of the API. Look at the first image in bullet point 1 of this section to see the output of a user's information as it is intended to be displayed.
 					Next, however, when I used curl again, I was able to post any series of characters I wanted to. So by using html and javascript as the data to be sent in the login, lat, and lng fields, I was able to affect all users of the application.<br>
@@ -75,6 +78,7 @@
 			</li>
 			<li>
 				<h3>Lack of Privacy of Usernames</h3>
+				<p>Has to do with GET API but also the design of the assignment 2 usernames - low severity in terms of affecting the application, higher severity in terms of security of users</p>
 				<p>
 					This is not necessarily a security issue in terms of how the assignments were implemented, but I just thought I'd point out that the usernames given at the beginning of assignment 2 were supposed to preserve anonymity, but they do not. I simply have to go to the url http://tuftsdev.github.io/comp20-alee/mmaps/ (a public website) and I am brought to Alice Lee's map page which contains her "private" username.
 
