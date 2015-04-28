@@ -1,1 +1,12 @@
-# comp20-nmajumder
+# Comp 20 Portfolio
+# Nathan Majumder
+
+1. The purpose of this git repository is to allow me to keep track of changes I made on assignments and labs throughout the class as well as to hold onto a portfolio of work to have in the future.
+
+2. My favorite lab was the captains log lab because it was the first time we were exposed to persistent data storage. It opened a door to a whole new world of possibilities in terms of web projects we could do in the future.
+
+3. Seeing as my knowledge of web programming was zero coming into this course, I think I've grown an infinite amount since day 1. I didn't know how to make an html file appear in a web browser before this, and now I'm making web applications with servers!
+
+4. The most important thing I learned in this course was to not re-invent the wheel. I'm used to programming in languages where I have to write any and all functions I want to use, so when I started using javascript my first thought was to write a function whenever I wanted something done, but with a little looking around on the web, I could usually find something that did exactly what I wanted. For example, when working on the semester-long project, I wanted to take an array of objects and sort them by a specific field and display a graph of the top five. I began writing a sorting algorithm, but realized there might be something I could use already out there, so I looked and sure enough I found a function someone had written that took an array of objects and sorted them by a specified field. In a more general sense, this idea that everything has been done before helped in my approach of problems. I often found myself not knowing where to go next on assignments or labs. I would flounder around with how to use certain functions or put different pieces of code together, but when I started to realize that it wasn't cheating to read what others had written before me, my life became a lot easier. Sites like stack overflow were helpful in explaining how to use previously written functions and do things I didn't know how to do. Hopefully I'll make use of this idea in the future and won't try to do everything myself when others have already done it.
+
+5. Coming out of this course, I am interested in learning more about security -- both how to protect information and how to attack vulnerable sites. I thought that piece of the course at the end was really interesting and wish we could have spent a little more time discussing it.
